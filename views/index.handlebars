@@ -2,8 +2,34 @@
 <html>
 <head>
   <title></title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyGMI9Ay9WxySDP7LtSlprGnBYsA49an4"></script>
+  <script type="text/javascript">
+    function initialize() {
+      var mapOptions = {
+        center: { lat: 32.7157380, lng: -117.1610840},
+        zoom: 11
+      };
+      var map = new google.maps.Map(document.getElementById('map-canvas'),
+          mapOptions);
+
+      map.data.loadGeoJson('data/zillowneighborhoodsca.geojson');
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
 </head>
 <body>
-  test
+
+
+
+  <div id="sidebar-wrapper"></div>
+  <div id="map-canvas"></div>
+
+
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>

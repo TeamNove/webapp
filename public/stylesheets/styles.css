@@ -1,0 +1,23 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#sidebar-wrapper {
+  margin-left: -250px;
+  left: 250px;
+  width: 250px;
+  border-right: 1px solid #000;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+#map-canvas {
+  height: 100%;
+  width: auto;
+  margin-left: 250px;
+  padding: 0;
+}
