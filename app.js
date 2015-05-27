@@ -7,6 +7,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var async = require('async');
 var app = express();
+var gm = require('googlemaps');
 
 // Configure the template engine
 app.engine('handlebars', handlebars());
