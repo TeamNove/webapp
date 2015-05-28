@@ -12,7 +12,7 @@
         center: { lat: 32.7157380, lng: -117.1610840},
         zoom: 11
       };
-      var map = new google.maps.Map(document.getElementById('map-canvas'),
+      var map = new google.maps.Map(document.getElementById('map_canvas'),
           mapOptions);
 
       map.data.loadGeoJson('data/zillowneighborhoodsca.geojson');
@@ -21,11 +21,24 @@
   </script>
 </head>
 <body>
-
-
-
-  <div id="sidebar-wrapper"></div>
-  <div id="map-canvas"></div>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Team Nove</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div id="sidebar_wrapper">sdfsdf</div>
+  <div id="map_canvas" class="container_margin"></div>
 
 
 
