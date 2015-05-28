@@ -4,7 +4,7 @@ html, body {
   padding: 0;
 }
 
-#sidebar-wrapper {
+#sidebar_wrapper {
   margin-left: -250px;
   left: 250px;
   width: 250px;
@@ -15,9 +15,13 @@ html, body {
   z-index: 1000;
 }
 
-#map-canvas {
+#map_canvas {
   height: 100%;
   width: auto;
   margin-left: 250px;
   padding: 0;
+}
+
+.container_margin {
+  margin-top: 50px;
 }
