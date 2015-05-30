@@ -192,7 +192,7 @@ function initialize() {
   map = new google.maps.Map(d3.select("#map_canvas").node(), {
           zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: new google.maps.LatLng(32.7157380, -117.1610840), // Mozambique
+          center: new google.maps.LatLng(32.7157380, -117.1610840)
       });
 
   // listen to Leap Motion
