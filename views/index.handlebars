@@ -12,7 +12,8 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://d3js.org/queue.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>\
+  <script type="text/javascript" src="javascripts/d3visualizations.js"></script>
   <script type="text/javascript" src="javascripts/leap-map.js"></script>
 </head>
 <body>
@@ -37,71 +38,42 @@
     <div id="popUpDiv">
       <div id="menu">
         <h1>MENU</h1>
-        <div id="direction">Direction</div>
-        <div id="traffic">Traffic</div>
-        <div id="transit">Transit</div>
-        <div id="terrain">Terrain</div>
     </div>
   </div>
 
-  <div id="sidebar_wrapper"></div>
+  <div id="sidebar_wrapper">
+    <form>
+      <div class="select_div">
+        <label>Any kids?</label>
+        <select class="form-control ">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select>
+      </div>
+      <div class="select_div">
+        <label>What type of home are you looking for?</label>
+        <select class="form-control ">
+          <option>Single Household</option>
+          <option>Townhouse</option>
+          <option>Apartment</option>
+        </select>
+      </div>
+      <div class="select_div">
+        <label>What's your budget?</label>
+        <select class="form-control ">
+          <option>Below $50,000</option>
+          <option>$50,000 - $100,000</option>
+          <option>$100,000 - $200,000</option>
+          <option>$200,000 - $500,000</option>
+          <option>Greater than $500,000</option>
+        </select>
+      </div>
+    </form>
+  </div>
   <div id="map_canvas" class="container_margin"></div>
-
-
-<!-- <script>
-  var $map = $("#map_canvas");
-  var map = new google.maps.Map($map[0], {
-          zoom: 10,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: new google.maps.LatLng(32.7157380, -117.1610840)
-      });
-
-  google.maps.event.addListener(map, 'bounds_changed', function() {
-      google.maps.event.trigger(map, 'resize');
-      map.setCenter(new google.maps.LatLng(32.7157380, -117.1610840));
-      google.maps.event.clearListeners(map, 'bounds_changed');
-  });
-
-  d3.json("data/zillowneighborhoodsca.geojson", function(data) {
-
-    var overlay = new google.maps.OverlayView();
-    overlay.onAdd = function () {
-
-      var layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "SvgOverlay");
-      var svg = layer.append("svg")
-          .attr("width", $map.width())
-          .attr("height", $map.height());
-      var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
-
-      overlay.draw = function () {
-          var markerOverlay = this;
-          var overlayProjection = markerOverlay.getProjection();
-
-          // Turn the overlay projection into a d3 projection
-          var googleMapProjection = function (coordinates) {
-              var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
-              var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
-              return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
-          }
-
-          path = d3.geo.path().projection(googleMapProjection);
-          adminDivisions.selectAll("path")
-              .data(data.features)
-              .attr("d", path) // update existing paths
-          .enter().append("svg:path")
-              .attr("d", path);
-      };
-
-    };
-    overlay.setMap(map);
-  });
-
-
-
-
-
-    </script> -->
-
 
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>

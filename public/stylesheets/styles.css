@@ -13,6 +13,7 @@ html, body {
   height: 100%;
   overflow-y: auto;
   z-index: 1000;
+  padding: 20px;
 }
 
 #map_canvas {
@@ -23,7 +24,7 @@ html, body {
 }
 
 .container_margin {
-  margin-top: 50px;
+  margin-top: 31px;
 }
 
 #opac{
@@ -59,12 +60,6 @@ html, body {
   visibility: hidden;
 }
 
-/*.SvgOverlay, .SvgOverlay svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-}*/
-
 .SvgOverlay {
   position: relative;
   width: auto;
@@ -84,4 +79,9 @@ html, body {
   stroke-width: 2px;
   fill: #9771e3;
   fill-opacity: .3;
+}
+
+.select_div {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
