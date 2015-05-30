@@ -80,8 +80,8 @@ html, body {
 }
 
 .SvgOverlay path {
-  stroke: Orange;
+  stroke: #5e28ca;
   stroke-width: 2px;
-  fill: Orange;
+  fill: #9771e3;
   fill-opacity: .3;
 }
