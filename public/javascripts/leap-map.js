@@ -1,6 +1,6 @@
 // Courtesy of https://github.com/jaxzin/leap-map
 
-var map;
+var map, $map;
 var leftHandPrev;
 var separationStart;
 var opened;
@@ -188,14 +188,12 @@ function zoom(frame, circleGesture) {
     }
 }
 function initialize() {
-  var mapOptions = {
-    center: { lat: 32.7157380, lng: -117.1610840},
-    zoom: 11,
-  };
-  map = new google.maps.Map(document.getElementById('map_canvas'),
-      mapOptions);
-
-  map.data.loadGeoJson('data/zillowneighborhoodsca.geojson');
+  $map = $("#map_canvas");
+  map = new google.maps.Map(d3.select("#map_canvas").node(), {
+          zoom: 10,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: new google.maps.LatLng(32.7157380, -117.1610840), // Mozambique
+      });
 
   // listen to Leap Motion
   Leap.loop({enableGestures: true}, move);
@@ -230,4 +228,39 @@ function isClockwise(frame, gesture) {
     if (dotProduct  >  0) clockwise = true;
     return clockwise;
 }
+
+d3.json("data/zillowneighborhoodsca.geojson", function(data) {
+
+  var overlay = new google.maps.OverlayView();
+  overlay.onAdd = function () {
+
+    var layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "SvgOverlay");
+    var svg = layer.append("svg")
+        .attr("width", $map.width())
+        .attr("height", $map.height());
+    var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
+
+    overlay.draw = function () {
+        var markerOverlay = this;
+        var overlayProjection = markerOverlay.getProjection();
+
+        // Turn the overlay projection into a d3 projection
+        var googleMapProjection = function (coordinates) {
+            var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
+            var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
+            return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
+        }
+
+        path = d3.geo.path().projection(googleMapProjection);
+        adminDivisions.selectAll("path")
+            .data(data.features)
+            .attr("d", path) // update existing paths
+        .enter().append("svg:path")
+            .attr("d", path);
+    };
+
+  };
+  overlay.setMap(map);
+});
+
 google.maps.event.addDomListener(window, 'load', initialize);
