@@ -5,20 +5,12 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
+  <script src="//js.leapmotion.com/leap-0.6.4.min.js"></script>
+  <script src="//js.leapmotion.com/leap-plugins-0.1.10.min.js"></script>
+  <script src="//js.leapmotion.com/leap.rigged-hand-0.1.7.min.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyGMI9Ay9WxySDP7LtSlprGnBYsA49an4"></script>
-  <script type="text/javascript">
-    function initialize() {
-      var mapOptions = {
-        center: { lat: 32.7157380, lng: -117.1610840},
-        zoom: 11
-      };
-      var map = new google.maps.Map(document.getElementById('map_canvas'),
-          mapOptions);
-
-      map.data.loadGeoJson('data/zillowneighborhoodsca.geojson');
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
+  <script type="text/javascript" src="javascripts/d3.min.js"></script>
+  <script type="text/javascript" src="javascripts/leap-map.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-default navbar-fixed-top">
@@ -37,11 +29,22 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+
+  <div id="opac"></div>
+    <div id="popUpDiv">
+      <div id="menu">
+        <h1>MENU</h1>
+        <div id="direction">Direction</div>
+        <div id="traffic">Traffic</div>
+        <div id="transit">Transit</div>
+        <div id="terrain">Terrain</div>
+    </div>
+  </div>
+
   <div id="sidebar_wrapper"></div>
   <div id="map_canvas" class="container_margin"></div>
 
-
-
+</script>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
