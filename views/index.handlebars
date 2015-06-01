@@ -5,20 +5,15 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
+  <script src="//js.leapmotion.com/leap-0.6.4.min.js"></script>
+  <script src="//js.leapmotion.com/leap-plugins-0.1.10.min.js"></script>
+  <script src="//js.leapmotion.com/leap.rigged-hand-0.1.7.min.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyGMI9Ay9WxySDP7LtSlprGnBYsA49an4"></script>
-  <script type="text/javascript">
-    function initialize() {
-      var mapOptions = {
-        center: { lat: 32.7157380, lng: -117.1610840},
-        zoom: 11
-      };
-      var map = new google.maps.Map(document.getElementById('map_canvas'),
-          mapOptions);
-
-      map.data.loadGeoJson('data/zillowneighborhoodsca.geojson');
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/queue.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>\
+  <script type="text/javascript" src="javascripts/leap-map.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-default navbar-fixed-top">
@@ -37,12 +32,50 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-  <div id="sidebar_wrapper"></div>
+
+  <div id="opac"></div>
+    <div id="popUpDiv">
+      <div id="menu">
+        <h1>MENU</h1>
+    </div>
+  </div>
+
+  <div id="sidebar_wrapper">
+    <form id="my_form">
+      <div class="select_div">
+        <label>Any kids?</label>
+        <select class="form-control ">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select>
+      </div>
+      <div class="select_div">
+        <label>What type of home are you looking for?</label>
+        <select class="form-control ">
+          <option>Single Household</option>
+          <option>Townhouse</option>
+          <option>Apartment</option>
+        </select>
+      </div>
+      <div class="select_div">
+        <label>What's your budget?</label>
+        <select class="form-control ">
+          <option>Below $50,000</option>
+          <option>$50,000 - $100,000</option>
+          <option>$100,000 - $200,000</option>
+          <option>$200,000 - $500,000</option>
+          <option>Greater than $500,000</option>
+        </select>
+      </div>
+
+    </form>
+    <button id="update_map" class="btn btn-default btn_center">Submit</button>
+  </div>
   <div id="map_canvas" class="container_margin"></div>
 
-
-
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>

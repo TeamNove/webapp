@@ -13,6 +13,7 @@ html, body {
   height: 100%;
   overflow-y: auto;
   z-index: 1000;
+  padding: 20px;
 }
 
 #map_canvas {
@@ -23,5 +24,73 @@ html, body {
 }
 
 .container_margin {
-  margin-top: 50px;
+  margin-top: 31px;
+}
+
+#opac{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-style: solid;
+  border-width: 2px;
+  background-color: black;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.75;
+  visibility: hidden;
+}
+
+ #popUpDiv{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 12%;
+  width: 700px;
+  height: 400px;
+  background-color: black;
+  border-style: solid;
+  border-color: white;
+  border-width: 4px;
+  z-index: 2;
+  visibility: hidden;
+}
+
+.SvgOverlay {
+  position: relative;
+  width: auto;
+  height: 100%;
+}
+
+.SvgOverlay svg {
+  position: absolute;
+  top: -4000px;
+  left: -4000px;
+  width: 8000px;
+  height: 8000px;
+}
+
+.SvgOverlay path {
+  stroke: #5e28ca;
+  stroke-width: 2px;
+  fill: #9771e3;
+  fill-opacity: .3;
+}
+
+path:hover {
+  fill: #ffffff;
+}
+
+.select_div {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.btn_center {
+  display: block;
+  margin: 0 auto;
 }
