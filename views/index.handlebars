@@ -13,7 +13,6 @@
   <script src="http://d3js.org/queue.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>\
-  <script type="text/javascript" src="javascripts/d3visualizations.js"></script>
   <script type="text/javascript" src="javascripts/leap-map.js"></script>
 </head>
 <body>
@@ -42,7 +41,7 @@
   </div>
 
   <div id="sidebar_wrapper">
-    <form>
+    <form id="my_form">
       <div class="select_div">
         <label>Any kids?</label>
         <select class="form-control ">
@@ -71,7 +70,9 @@
           <option>Greater than $500,000</option>
         </select>
       </div>
+
     </form>
+    <button id="update_map" class="btn btn-default btn_center">Submit</button>
   </div>
   <div id="map_canvas" class="container_margin"></div>
 

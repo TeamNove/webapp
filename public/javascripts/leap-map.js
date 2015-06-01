@@ -1,4 +1,3 @@
-// Courtesy of https://github.com/jaxzin/leap-map
 
 var map, $map;
 var leftHandPrev;
@@ -8,6 +7,33 @@ var MAX_ZOOM = 22;
 var SEPARATION_SCALING = 1.25;
 var LEFT_HAND = 0, RIGHT_HAND = 1;
 var X = 0, Y = 1, Z = 2;
+
+
+$(document).ready(function() {
+  initializePage();
+  drawOverlay();
+  google.maps.event.addDomListener(window, 'load', initialize);
+});
+
+function initializePage(){
+  $("#update_map").click(update_map);
+
+
+}
+
+function initialize() {
+  $map = $("#map_canvas");
+  map = new google.maps.Map(d3.select("#map_canvas").node(), {
+          zoom: 10,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: new google.maps.LatLng(32.7157380, -117.1610840),
+          streetViewControl : false
+      });
+
+  // listen to Leap Motion
+  Leap.loop({enableGestures: true}, move);
+}
+
 function move(frame) {
   // Look for any circle gestures and process the zoom
   // TODO: filter out multiple circle gestures per frame
@@ -187,17 +213,7 @@ function zoom(frame, circleGesture) {
         }
     }
 }
-function initialize() {
-  $map = $("#map_canvas");
-  map = new google.maps.Map(d3.select("#map_canvas").node(), {
-          zoom: 10,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: new google.maps.LatLng(32.7157380, -117.1610840)
-      });
 
-  // listen to Leap Motion
-  Leap.loop({enableGestures: true}, move);
-}
 // ==== utility functions =====
 /** Returns the truth that a Leap Motion API Hand object is currently in a gripped or "grabbed" state.
 */
@@ -229,38 +245,112 @@ function isClockwise(frame, gesture) {
     return clockwise;
 }
 
-d3.json("data/zillowneighborhoodsca.geojson", function(data) {
+function drawOverlay() {
 
-  var overlay = new google.maps.OverlayView();
-  overlay.onAdd = function () {
+  d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
-    var layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "SvgOverlay");
-    var svg = layer.append("svg")
-        .attr("width", $map.width())
-        .attr("height", $map.height());
-    var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
+    var overlay = new google.maps.OverlayView();
+    overlay.onAdd = function () {
 
-    overlay.draw = function () {
-        var markerOverlay = this;
-        var overlayProjection = markerOverlay.getProjection();
+      var layer = d3.select(this.getPanes().overlayMouseTarget).append("div").attr("class", "SvgOverlay");
+      var svg = layer.append("svg")
+          .attr("width", $map.width())
+          .attr("height", $map.height());
+      var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
 
-        // Turn the overlay projection into a d3 projection
-        var googleMapProjection = function (coordinates) {
-            var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
-            var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
-            return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
-        }
+      overlay.draw = function () {
+          var markerOverlay = this;
+          var overlayProjection = markerOverlay.getProjection();
 
-        path = d3.geo.path().projection(googleMapProjection);
-        adminDivisions.selectAll("path")
-            .data(data.features)
-            .attr("d", path) // update existing paths
-        .enter().append("svg:path")
-            .attr("d", path);
+          // Turn the overlay projection into a d3 projection
+          var googleMapProjection = function (coordinates) {
+              var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
+              var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
+              return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
+          }
+
+          path = d3.geo.path().projection(googleMapProjection);
+          adminDivisions.selectAll("path")
+              .data(data.features)
+              .attr("d", path) // update existing paths
+          .enter().append("svg:path")
+              .attr("d", path);
+      };
+
     };
 
-  };
-  overlay.setMap(map);
-});
+    overlay.setMap(map);
+  });
 
-google.maps.event.addDomListener(window, 'load', initialize);
+}
+
+
+
+function update_map() {
+  console.log("recognized button click");
+
+  var color = d3.scale.threshold()
+    .domain([.02, .04, .06, .08, .10])
+    .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+  var rateById = {};
+
+
+  queue()
+    .defer(d3.json, "data/zillowneighborhoodsca.geojson")
+    .defer(d3.tsv, "data/test.tsv")
+    .await(ready);
+
+  function ready(error, data, data_test) {
+
+    var rateById = {};
+
+    data_test.forEach(function(d) { rateById[d.REGIONID] = +d.rate; });
+
+    console.log(rateById);
+    var overlay = new google.maps.OverlayView();
+    overlay.onAdd = function () {
+
+      var layer = d3.select(this.getPanes().overlayMouseTarget).append("div").attr("class", "SvgOverlay");
+      var svg = layer.append("svg")
+          .attr("width", $map.width())
+          .attr("height", $map.height());
+      var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
+
+      overlay.draw = function () {
+          var markerOverlay = this;
+          var overlayProjection = markerOverlay.getProjection();
+
+          // Turn the overlay projection into a d3 projection
+          var googleMapProjection = function (coordinates) {
+              var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
+              var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
+              return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
+          }
+
+          console.log(rateById);
+
+          path = d3.geo.path().projection(googleMapProjection);
+          adminDivisions.selectAll("path")
+              .data(data.features)
+              .attr("d", path) // update existing paths
+          .enter().append("svg:path")
+              .attr("d", path).style("fill", function(d) {
+                // console.log(d);
+                // console.log(rateById[d.REGIONID]);
+                return color(rateById[d.properties.REGIONID]);
+              });
+
+      };
+
+    };
+
+    overlay.setMap(map);
+  }
+}
+
+
+
+
+
+
+

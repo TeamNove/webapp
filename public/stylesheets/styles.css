@@ -81,7 +81,16 @@ html, body {
   fill-opacity: .3;
 }
 
+path:hover {
+  fill: #ffffff;
+}
+
 .select_div {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.btn_center {
+  display: block;
+  margin: 0 auto;
 }
