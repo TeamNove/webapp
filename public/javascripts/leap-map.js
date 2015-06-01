@@ -245,25 +245,33 @@ function isClockwise(frame, gesture) {
     return clockwise;
 }
 
+var overlay;
+var layer;
+var svg;
+var adminDivisions;
+var path;
+var googleMapProject;
+var markerOverlay;
+var overlayProjection;
 function drawOverlay() {
 
   d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
-    var overlay = new google.maps.OverlayView();
+    overlay = new google.maps.OverlayView();
     overlay.onAdd = function () {
 
-      var layer = d3.select(this.getPanes().overlayMouseTarget).append("div").attr("class", "SvgOverlay");
-      var svg = layer.append("svg")
+      layer = d3.select(this.getPanes().overlayMouseTarget).append("div").attr("class", "SvgOverlay");
+      svg = layer.append("svg")
           .attr("width", $map.width())
           .attr("height", $map.height());
-      var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
+      adminDivisions = svg.append("g").attr("class", "AdminDivisions");
 
       overlay.draw = function () {
-          var markerOverlay = this;
-          var overlayProjection = markerOverlay.getProjection();
+          markerOverlay = this;
+          overlayProjection = markerOverlay.getProjection();
 
           // Turn the overlay projection into a d3 projection
-          var googleMapProjection = function (coordinates) {
+          googleMapProjection = function (coordinates) {
               var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
               var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
               return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
@@ -285,15 +293,14 @@ function drawOverlay() {
 }
 
 
-
 function update_map() {
   console.log("recognized button click");
 
   var color = d3.scale.threshold()
     .domain([.02, .04, .06, .08, .10])
     .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
-  var rateById = {};
 
+  var rateById = {};
 
   queue()
     .defer(d3.json, "data/zillowneighborhoodsca.geojson")
@@ -307,44 +314,15 @@ function update_map() {
     data_test.forEach(function(d) { rateById[d.REGIONID] = +d.rate; });
 
     console.log(rateById);
-    var overlay = new google.maps.OverlayView();
-    overlay.onAdd = function () {
 
-      var layer = d3.select(this.getPanes().overlayMouseTarget).append("div").attr("class", "SvgOverlay");
-      var svg = layer.append("svg")
-          .attr("width", $map.width())
-          .attr("height", $map.height());
-      var adminDivisions = svg.append("g").attr("class", "AdminDivisions");
+    adminDivisions.selectAll("path")
+        .data(data.features)
+        .attr("d", path).style("fill", function(d) {
+          // console.log(d);
+          // console.log(rateById[d.REGIONID]);
+          return color(rateById[d.properties.REGIONID]);
+        });
 
-      overlay.draw = function () {
-          var markerOverlay = this;
-          var overlayProjection = markerOverlay.getProjection();
-
-          // Turn the overlay projection into a d3 projection
-          var googleMapProjection = function (coordinates) {
-              var googleCoordinates = new google.maps.LatLng(coordinates[1], coordinates[0]);
-              var pixelCoordinates = overlayProjection.fromLatLngToDivPixel(googleCoordinates);
-              return [pixelCoordinates.x + 4000, pixelCoordinates.y + 4000];
-          }
-
-          console.log(rateById);
-
-          path = d3.geo.path().projection(googleMapProjection);
-          adminDivisions.selectAll("path")
-              .data(data.features)
-              .attr("d", path) // update existing paths
-          .enter().append("svg:path")
-              .attr("d", path).style("fill", function(d) {
-                // console.log(d);
-                // console.log(rateById[d.REGIONID]);
-                return color(rateById[d.properties.REGIONID]);
-              });
-
-      };
-
-    };
-
-    overlay.setMap(map);
   }
 }
 

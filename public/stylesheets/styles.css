@@ -76,12 +76,13 @@ html, body {
 
 .SvgOverlay path {
   stroke: #5e28ca;
-  stroke-width: 2px;
+  stroke-width: 1px;
   fill: #9771e3;
-  fill-opacity: .3;
+  /*fill-opacity: .3;*/
 }
 
 path:hover {
+  fill-opacity: 0;
   fill: #ffffff;
 }
 
