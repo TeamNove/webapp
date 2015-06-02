@@ -127,9 +127,8 @@ function palmPosition(hand) {
 function menuOpen(frame){
   if(frame.hands.length  == 2){
     if (palmPosition(frame.hands[0]) === 'up' && palmPosition(frame.hands[1]) === 'up') {
-      document.getElementById("opac").style.visibility = 'visible';
-      document.getElementById("popUpDiv").style.visibility = 'visible';
-      $("#my_form").attr('disabled', true);
+      document.getElementById("dim_map").style.visibility = 'visible';
+      document.getElementById("palm_menu").style.visibility = 'visible';
       opened = true;
     }
   }
@@ -138,8 +137,8 @@ function menuOpen(frame){
 function menuClose(frame) {
   if(frame.hands.length  == 2){
     if (palmPosition(frame.hands[0]) === 'down' && palmPosition(frame.hands[1]) === 'down') {
-      document.getElementById("opac").style.visibility = 'hidden';
-      document.getElementById("popUpDiv").style.visibility = 'hidden';
+      document.getElementById("dim_map").style.visibility = 'hidden';
+      document.getElementById("palm_menu").style.visibility = 'hidden';
       opened = false;
     }
   }
@@ -268,6 +267,8 @@ function drawOverlay() {
           .attr("height", $map.height());
       adminDivisions = svg.append("g").attr("class", "AdminDivisions");
 
+      svg.call(tip);
+
       overlay.draw = function () {
           markerOverlay = this;
           overlayProjection = markerOverlay.getProjection();
@@ -284,7 +285,7 @@ function drawOverlay() {
               .data(data.features)
               .attr("d", path) // update existing paths
           .enter().append("svg:path")
-              .attr("d", path);
+              .attr("d", path).on('mouseover', tip.show).on('mouseout', tip.hide);
       };
 
     };
@@ -294,7 +295,28 @@ function drawOverlay() {
 
 }
 
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .html(function(d) {
+    console.log(d.properties.NAME);
+    return "<span>" + d.properties.NAME + "</span>";
+  });
 
+var tipFactors = d3.tip()
+  .attr('class', 'd3-tip')
+  .html(function(d) {
+    // console.log(d.properties.NAME);
+    // console.log(d);
+    // var factors = getFactors();
+    // console.log(factors);
+
+    return "<span>" +
+              d.properties.NAME +
+           "</span>";
+  });
+
+
+var factors;
 function update_map() {
   console.log("recognized button click");
   var color = d3.scale.threshold()
@@ -303,12 +325,14 @@ function update_map() {
               "#88419d", "#810f7c", "#4d004b"]);
   var rateById = {};
 
-  var factors = getFactors();
+  factors = getFactors();
 
   d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
-    console.log(data);
-    console.log(factors);
+    // console.log(data);
+    // console.log(factors);
+
+    svg.call(tipFactors);
 
     for (var i = 0; i < factors.length; i++) {
       // console.log("CMON");
@@ -322,7 +346,6 @@ function update_map() {
 
 
           rateById[data.features[j].properties.REGIONID] =+ factors[i].NoveFactor;
-
         }
       }
     }
@@ -335,7 +358,7 @@ function update_map() {
           // console.log(d);
           // console.log(rateById[d.REGIONID]);
           return color(rateById[d.properties.REGIONID]);
-        });
+        }).on('mouseover', tipFactors.show).on('mouseout', tipFactors.hide);;
 
   });
 
