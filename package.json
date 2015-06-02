@@ -17,6 +17,7 @@
     "mongoose": "^4.0.2",
     "morgan": "^1.5.3",
     "path": "^0.11.14",
+    "pg": "^4.3.0",
     "session": "^0.1.0"
   },
   "devDependencies": {},
