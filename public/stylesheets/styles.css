@@ -52,7 +52,7 @@ html, body {
   margin-top: 12%;
   width: 700px;
   height: 400px;
-  background-color: black;
+  background-color: white;
   border-style: solid;
   border-color: white;
   border-width: 4px;
@@ -77,8 +77,8 @@ html, body {
 .SvgOverlay path {
   stroke: #5e28ca;
   stroke-width: 1px;
-  fill: #9771e3;
-  /*fill-opacity: .3;*/
+  fill: none;
+  fill-opacity: .8;
 }
 
 path:hover {
