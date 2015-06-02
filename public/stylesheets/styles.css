@@ -27,27 +27,26 @@ html, body {
   margin-top: 31px;
 }
 
-#opac{
+#dim_map {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  border-style: solid;
-  border-width: 2px;
   background-color: black;
   height: 100%;
   z-index: 1;
   opacity: 0.75;
   visibility: hidden;
+  margin-left: 250px;
 }
 
- #popUpDiv{
+ #palm_menu {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
+  left: 15%;
   margin: auto;
   margin-top: 12%;
   width: 700px;
@@ -75,15 +74,15 @@ html, body {
 }
 
 .SvgOverlay path {
-  stroke: #5e28ca;
+  stroke: black;
   stroke-width: 1px;
-  fill: none;
+  fill: #adadad;
   fill-opacity: .8;
 }
 
 path:hover {
-  fill-opacity: 0;
-  fill: #ffffff;
+  stroke: black;
+  stroke-width: 2px;
 }
 
 .select_div {
@@ -94,4 +93,13 @@ path:hover {
 .btn_center {
   display: block;
   margin: 0 auto;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
 }
