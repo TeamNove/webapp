@@ -12,12 +12,12 @@ var X = 0, Y = 1, Z = 2;
 $(document).ready(function() {
   initializePage();
   drawOverlay();
+  DelphiDemo.init();
   google.maps.event.addDomListener(window, 'load', initialize);
 });
 
 function initializePage(){
   $("#update_map").click(update_map);
-
 
 }
 
@@ -129,6 +129,7 @@ function menuOpen(frame){
     if (palmPosition(frame.hands[0]) === 'up' && palmPosition(frame.hands[1]) === 'up') {
       document.getElementById("opac").style.visibility = 'visible';
       document.getElementById("popUpDiv").style.visibility = 'visible';
+      $("#my_form").attr('disabled', true);
       opened = true;
     }
   }
@@ -179,6 +180,7 @@ function markHands(frame) {
               fillColor: handColor,
               fillOpacity: 0.35,
               map: map,
+              zIndex: 1,
               center: newCenter,
               radius: baseRadius * scaling
             });
@@ -295,23 +297,35 @@ function drawOverlay() {
 
 function update_map() {
   console.log("recognized button click");
-
   var color = d3.scale.threshold()
-    .domain([.02, .04, .06, .08, .10])
-    .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
-
+    .domain([6.7, 6.8, 6.9, 7.0, 7.1, 7.2, 7.3, 7.4, 8])
+    .range(["#f7fcfd", "#e0ecf4", "#bfd3e6", "#9ebcda","#8c96c6", "#8c6bb1",
+              "#88419d", "#810f7c", "#4d004b"]);
   var rateById = {};
 
-  queue()
-    .defer(d3.json, "data/zillowneighborhoodsca.geojson")
-    .defer(d3.tsv, "data/test.tsv")
-    .await(ready);
+  var factors = getFactors();
 
-  function ready(error, data, data_test) {
+  d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
-    var rateById = {};
+    console.log(data);
+    console.log(factors);
 
-    data_test.forEach(function(d) { rateById[d.REGIONID] = +d.rate; });
+    for (var i = 0; i < factors.length; i++) {
+      // console.log("CMON");
+      for (var j = 0; j < data.features.length; j++) {
+        // console.log("wtf");
+        // console.log("factors area name: " + factors[i]);
+        // console.log("region id: " + data.features[j].properties.REGIONID);
+
+        if (factors[i].Area == data.features[j].properties.NAME ||
+              factors[i].Area == data.features[j].properties.CITY) {
+
+
+          rateById[data.features[j].properties.REGIONID] =+ factors[i].NoveFactor;
+
+        }
+      }
+    }
 
     console.log(rateById);
 
@@ -323,9 +337,174 @@ function update_map() {
           return color(rateById[d.properties.REGIONID]);
         });
 
-  }
+  });
+
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+var AllData
+var DelphiDemo = DelphiDemo || (function() {
+  var self = {};
+  /**
+   * Send an ajax request to the server to retrieve delphi db data.
+   */
+  self.getDelphiData = function() {
+    var eduData, HCData, HVData;
+    $.when(
+      $.getJSON("/delphi-education", function(data) {
+          eduData = data;
+      }),
+      $.getJSON("/delphi-home-value", function(data) {
+          HVData = data;
+      }),
+      $.getJSON("/delphi-housing-info", function(data) {
+          HCData = data;
+      })
+    ).then(function() {
+      AllData = join(eduData.rows, HCData, HVData, "Area", "Area", "Area", function(edu, hc, hv) {
+        var region = {};
+        if (edu == null)
+        {
+          region.totalpop25 = null;
+          region.l9pop25 = null;
+          region.nineto12pop25 = null;
+          region.highgradpop25 = null;
+          region.nodippop25 = null;
+          region.assopop25 = null;
+          region.bachpop25 = null;
+          region.mastpop25 = null;
+        }
+        else {
+          region.Area = edu.Area;
+          region.totalpop25 = edu['Population 25 and older'];
+          region.l9pop25 = edu['Less than 9th grade (age>=25)'];
+          region.nineto12pop25 = edu['9th through 12th grade, no diploma (age>=25)'];
+          region.highgradpop25 = edu['High school graduate (include equivalency (age>=25))'];
+          region.nodippop25 = edu['Some college, no diploma (age>=25)'];
+          region.assopop25 = edu["Associate's degree (age>=25)"];
+          region.bachpop25 = edu["Bachelor's degree (age>=25)"];
+          region.mastpop25 = edu["Master's degree (age>=25)"];
+        }
+        if (hc == null)
+        {
+          region.HU = null;
+          region.HUSF = null;
+          region.HUSFMU = null;
+          region.HUMU = null;
+          region.HUMH = null;
+          region.Occ = null;
+          region.OSF = null;
+          region.OSFMU = null;
+          region.OMU = null;
+          region.OMH = null;
+        }
+        else {
+          region.Area = hc.Area;
+          region.HU = hc['Housing Units'];
+          region.HUSF = hc['Housing Units - Single Family'];
+          region.HUSFMU = hc['Housing Units - Single Family Multi Unit'];
+          region.HUMF = hc['Housing Units - Multi-Family'];
+          region.HUMH = hc['Housing Units - Mobile Homes'];
+          region.OHU = hc['Occupied House Holds'];
+          region.OSF = hc['Occupied - Single Family'];
+          region.OSFMU = hc['Occupied - Single Family Multi Unit'];
+          region.OMF = hc['Occupied - Multi-Family'];
+          region.OMH = hc['Occupied - Mobile Homes'];
+        }
+        if (hv == null)
+        {
+          region.tothouse = null;
+          region.HVl150 = null;
+          region.HV150 = null;
+          region.HV200 = null;
+          region.HV300 = null;
+          region.HV500 = null;
+          region.HV1000 = null;
+          region.medhouseval = null;
+        }
+        else {
+          region.Area = hv.Area;
+          region.tothouse = hv['Total owner occupied households'];
+          region.HVl150 = hv['House value <$150K'];
+          region.HV150 = hv['House value $150K-199K'];
+          region.HV200 = hv['House value $200K-299K'];
+          region.HV300 = hv['House value $300K-499K'];
+          region.HV500 = hv['House value $500K-999K'];
+          region.HV1000 = hv['House value $1000K+'];
+          region.medhouseval = hv['Median house value'];
+        }
+        return region;
+      });
+    });
+  };
+  /**
+   * initialize
+   */
+  self.init = function() {
+    self.getDelphiData();
+  };
+
+  return self;
+})();
+
+function join(lookupTable, lookupTable2, mainTable, lookupKey, lookupKey2, mainKey, select) {
+    var l = lookupTable.length,
+        l2 = lookupTable2.length,
+        m = mainTable.length,
+        lookupIndex = [],
+        lookupIndex2 = [],
+        output = [];
+    for (var i = 0; i < l; i++) {
+        var row = lookupTable[i];
+        lookupIndex[row[lookupKey].toLowerCase().replace(/\W/g,"")] = row;
+    }
+    for (var i2 = 0; i2 < l2; i2++) {
+      var row2 = lookupTable2[i2];
+      lookupIndex2[row2[lookupKey2].toLowerCase().replace(/\W/g,"")] = row2;
+    }
+    for (var j = 0; j < m; j++) {
+        var y = mainTable[j];
+        var mainindex = y[mainKey].toLowerCase().replace(/\W/g,"");
+        var x = lookupIndex[mainindex];
+        var x2 = lookupIndex2[mainindex];
+        output.push(select(x, x2, y));
+    }
+    return output;
+};
+
+function getFactors()
+{
+  var l = AllData.length,
+      output = [],
+      region;
+  for (var i = 0; i < l; i++)
+  {
+    var factors = {};
+    region = AllData[i];
+    factors.Area = region.Area;
+    factors.educationFactor = (region.l9pop25 + (region.nineto12pop25 * 2)
+      + (region.highgradpop25 * 4) + (region.nodippop25 * 6) + (region.assopop25 * 7)
+      + (region.bachpop25 * 8) + (region.mastpop25 * 10)) / (region.totalpop25 * 1.0);
+    factors.housingFactor = 8;
+    factors.socialFactor = 7.5;
+    factors.NoveFactor = (factors.educationFactor + factors.housingFactor
+                        + factors.socialFactor) / 3.0;
+    output.push(factors);
+  }
+  // console.log(output);
+  return output;
+}
 
 
 
