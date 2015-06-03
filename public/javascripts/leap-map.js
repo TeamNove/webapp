@@ -19,6 +19,7 @@ $(document).ready(function() {
 function initializePage(){
   $("#update_map").click(update_map);
 
+  $("#dynam_selection").change(append_selection);
 }
 
 function initialize() {
@@ -316,7 +317,6 @@ var tipFactors = d3.tip()
   });
 
 
-var factors;
 function update_map() {
   console.log("recognized button click");
   var color = d3.scale.threshold()
@@ -325,7 +325,10 @@ function update_map() {
               "#88419d", "#810f7c", "#4d004b"]);
   var rateById = {};
 
-  factors = getFactors();
+  var form_values = get_form_values();
+  console.log(form_values);
+
+  var factors = getFactors();
 
   d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
@@ -530,7 +533,58 @@ function getFactors()
 }
 
 
+function append_selection() {
+
+  $(".education_selection").remove();
+
+  var start = '<div class="select_div education_selection"><label>Child';
+  var mid = 'grade level?</label><select class="form-control" id="child';
+  var end = '"><option>Less than 9th grade</option><option>9th through 12th grade, no diploma</option><option>High school graduate (include equivalency)</option><option>Some college, no diploma</option><option>Associate\'s degree</option><option>Bachelor\'s degree</option><option>Master\'s degree</option></select></div>';
+
+  if ($('#dynam_selection').val() == 1) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+  else if ($('#dynam_selection').val() == 2) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 2 " + mid + "2" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+  else if ($('#dynam_selection').val() == 3) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 2 " + mid + "2" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 3 " + mid + "3" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+  else if ($('#dynam_selection').val() == 4) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 2 " + mid + "2" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 3 " + mid + "3" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 4 " + mid + "4" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+}
 
 
+function get_form_values() {
+  // Creating JSON
+  var output = {};
 
+  // Get value of number of children selection and put
+  // it in the object under num_of_children attribute.
+  output.num_of_children = $('#dynam_selection').val();
+
+  // Create new education_levels attribute that is an array.
+  output.education_levels = [];
+
+  // Loop through the number of selection boxes using the number of children
+  // specified. Get the input from each one and push it into the array.
+  for (var child = 1; child <= output.num_of_children; child++) {
+    output.education_levels.push($('#child' + child).val());
+  }
+
+  // Get value of home_selection input and put it in home_type attribute.
+  output.home_type = $('#home_selection').val();
+
+  // Get value of budget_selection input and put it in budget attribute.
+  output.budget = $('#budget_selection').val();
+
+  return output;
+}
 
