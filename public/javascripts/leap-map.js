@@ -19,6 +19,7 @@ $(document).ready(function() {
 function initializePage(){
   $("#update_map").click(update_map);
 
+  $("#dynam_selection").change(append_selection);
 }
 
 function initialize() {
@@ -27,8 +28,13 @@ function initialize() {
           zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           center: new google.maps.LatLng(32.7157380, -117.1610840),
-          streetViewControl : false
-      });
+          streetViewControl : false,
+          styles: [{"featureType":"water","stylers":[{"visibility":"on"},{"color":"#b5cbe4"}]},{"featureType":"landscape","stylers":[{"color":"#efefef"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#83a5b0"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#bdcdd3"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#e3eed3"}]},{"featureType":"administrative","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"road"},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{},{"featureType":"road","stylers":[{"lightness":20}]}],
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT
+          },
+          panControl: false
+        });
 
   // listen to Leap Motion
   Leap.loop({enableGestures: true}, move);
@@ -316,7 +322,6 @@ var tipFactors = d3.tip()
   });
 
 
-var factors;
 function update_map() {
   console.log("recognized button click");
   var color = d3.scale.threshold()
@@ -325,7 +330,10 @@ function update_map() {
               "#88419d", "#810f7c", "#4d004b"]);
   var rateById = {};
 
-  factors = getFactors();
+  var form_values = get_form_values();
+  console.log(form_values);
+
+  var factors = getFactors();
 
   d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
@@ -342,7 +350,7 @@ function update_map() {
         // console.log("region id: " + data.features[j].properties.REGIONID);
 
         if (factors[i].Area == data.features[j].properties.NAME ||
-              factors[i].Area == data.features[j].properties.CITY) {
+              factors[i].Area == data.features[j].properties.DELPHIREGION) {
 
 
           rateById[data.features[j].properties.REGIONID] =+ factors[i].NoveFactor;
@@ -357,7 +365,10 @@ function update_map() {
         .attr("d", path).style("fill", function(d) {
           // console.log(d);
           // console.log(rateById[d.REGIONID]);
-          return color(rateById[d.properties.REGIONID]);
+          // if (!rateById[d.properties.REGIONID])
+          //   return "none";
+          // else
+            return color(rateById[d.properties.REGIONID]);
         }).on('mouseover', tipFactors.show).on('mouseout', tipFactors.hide);;
 
   });
@@ -530,7 +541,58 @@ function getFactors()
 }
 
 
+function append_selection() {
+
+  $(".education_selection").remove();
+
+  var start = '<div class="select_div education_selection"><label>Child';
+  var mid = 'grade level?</label><select class="form-control" id="child';
+  var end = '"><option>Less than 9th grade</option><option>9th through 12th grade, no diploma</option><option>High school graduate (include equivalency)</option><option>Some college, no diploma</option><option>Associate\'s degree</option><option>Bachelor\'s degree</option><option>Master\'s degree</option></select></div>';
+
+  if ($('#dynam_selection').val() == 1) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+  else if ($('#dynam_selection').val() == 2) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 2 " + mid + "2" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+  else if ($('#dynam_selection').val() == 3) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 2 " + mid + "2" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 3 " + mid + "3" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+  else if ($('#dynam_selection').val() == 4) {
+    $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 2 " + mid + "2" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 3 " + mid + "3" + end).hide().appendTo("#education_selection").fadeIn(1000);
+    $(start + " 4 " + mid + "4" + end).hide().appendTo("#education_selection").fadeIn(1000);
+  }
+}
 
 
+function get_form_values() {
+  // Create JSON
+  var output = {};
 
+  // Get value of number of children selection and put
+  // it in the object under num_of_children attribute.
+  output.num_of_children = $('#dynam_selection').val();
+
+  // Create new education_levels attribute that is an array.
+  output.education_levels = [];
+
+  // Loop through the number of selection boxes using the number of children
+  // specified. Get the input from each one and push it into the array.
+  for (var child = 1; child <= output.num_of_children; child++) {
+    output.education_levels.push($('#child' + child).val());
+  }
+
+  // Get value of home_selection input and put it in home_type attribute.
+  output.home_type = $('#home_selection').val();
+
+  // Get value of budget_selection input and put it in budget attribute.
+  output.budget = $('#budget_selection').val();
+
+  return output;
+}
 
