@@ -1,0 +1,124 @@
+img.bg {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+  img.bg {
+    left: 50%;
+    margin-left: -512px;   /* 50% */
+  }
+}
+
+#overlay {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color: black;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+h1, h2, h3, a{
+  color: #ffffff;
+}
+
+.font_title {
+  font-family: 'Lato', sans-serif;
+}
+
+.font_subtitle {
+  font-family: 'Roboto Slab', serif;
+}
+
+#main {
+  position: relative;
+}
+
+.button{
+  margin-top: 65px;
+  display: block;
+  width: 180px;
+  height: 70px;
+  font-size: 20px;
+  color: #fff;
+  line-height: 60px;
+  text-align: center;
+  border-style: solid;
+  border-width: 2px;
+  text-decoration: none;
+}
+
+.button:hover {
+  text-decoration: underline;
+  color: #fff;
+}
+
+.button:visited {
+  color: #fff;
+}
+
+.navbar-default {
+  background-color: #404040;
+  border-color: #404040;
+}
+.navbar-default .navbar-brand {
+  color: #fff;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #ffffff;
+}
+.navbar-default .navbar-text {
+  color: #fff;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #fff;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #ffffff;
+  background-color: #404040;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #ffffff;
+  background-color: #404040;
+}
+.navbar-default .navbar-toggle {
+  border-color: #404040;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #404040;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #fff;
+}
+.navbar-default .navbar-link {
+  color: #fff;
+}
+.navbar-default .navbar-link:hover {
+  color: #ffffff;
+}
+
+.navbar_inner {
+  background: transparent;
+  border-width: 0px;
+}
