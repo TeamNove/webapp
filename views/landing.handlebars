@@ -3,90 +3,32 @@
 <head>
   <title></title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
   <link href='http://fonts.googleapis.com/css?family=Lato|Roboto+Slab' rel='stylesheet' type='text/css'>
-  <style type="text/css">
-
-    img.bg {
-      /* Set rules to fill background */
-      min-height: 100%;
-      min-width: 1024px;
-
-      /* Set up proportionate scaling */
-      width: 100%;
-      height: auto;
-
-      /* Set up positioning */
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-
-    @media screen and (max-width: 1024px) { /* Specific to this particular image */
-      img.bg {
-        left: 50%;
-        margin-left: -512px;   /* 50% */
-      }
-    }
-
-    #overlay {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background-color: black;
-      height: 100%;
-      z-index: 1;
-      opacity: 0.4;
-    }
-
-    h1, h2, h3, a{
-      color: #ffffff;
-    }
-
-    .font_title {
-      font-family: 'Lato', sans-serif;
-    }
-
-    .font_subtitle {
-      font-family: 'Roboto Slab', serif;
-    }
-
-    #page_wrap {
-      position: relative;
-    }
-
-    .button{
-      margin-top: 65px;
-      display: block;
-      width: 180px;
-      height: 70px;
-      font-size: 20px;
-      color: #fff;
-      line-height: 60px;
-      text-align: center;
-      border-style: solid;
-      border-width: 2px;
-      text-decoration: none;
-    }
-
-    .button:hover {
-      text-decoration: underline;
-      color: #fff;
-    }
-
-    .button:visited {
-      color: #fff;
-    }
-
-  </style>
+  <link rel="stylesheet" type="text/css" href="stylesheets/landing-stylesheet.css"></li>
+  <link rel="stylesheet" type="text/css" href="stylesheets/animations.css">
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="javascripts/jquery.smoothState.min.js"></script>
+  <script type="text/javascript" src="javascripts/smoothState.js"></script>
 </head>
 <body>
+<!--   <nav class="navbar navbar-default navbar-fixed-top navbar_inner">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Team Nove</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      </div>
+  </nav> -->
 
   <img src="images/bg1.jpg" class="bg">
-  <div class="container" id="page_wrap">
-    <div class="row">
+  <div class="container m-scene" id="main">
+    <div class="row scene_element scene_element--fadein">
       <div class="col-md-6" style="margin-top: 155px;">
         <h1 class="font_style font_title">Our App Name</h1>
         <h1>________</h1>
@@ -103,7 +45,6 @@
       </div>
     </div>
   </div>
-
 
 </body>
 </html>

@@ -4,6 +4,7 @@
   <title></title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/animations.css">
   <script src="//js.leapmotion.com/leap-0.6.4.min.js"></script>
   <script src="//js.leapmotion.com/leap-plugins-0.1.10.min.js"></script>
   <script src="//js.leapmotion.com/leap.rigged-hand-0.1.7.min.js"></script>
@@ -14,69 +15,76 @@
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="javascripts/index.js"></script>
   <script type="text/javascript" src="javascripts/leap-map.js"></script>
+  <script type="text/javascript" src="javascripts/jquery.smoothState.min.js"></script>
+  <script type="text/javascript" src="javascripts/smoothState.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Team Nove</a>
-      </div>
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
+  <div id="main" class="m-scene" style="height: 100%;">
+    <nav class="navbar navbar-default navbar-fixed-top scene_element scene_element--fadeinup">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Team Nove</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
 
-  <div id="dim_map"></div>
-    <div id="palm_menu">
-      <div id="menu" class="text-center">
-        <h1>MENU</h1>
+    <div id="dim_map"></div>
+      <div id="palm_menu">
+        <div id="menu" class="text-center">
+          <h1>MENU</h1>
+      </div>
+    </div>
+
+    <div class="scene_element scene_element--fadeinup" style="height: 100%;">
+      <div id="sidebar_wrapper">
+        <form id="my_form">
+          <div class="select_div">
+            <label>Any kids?</label>
+            <select class="form-control" id="dynam_selection">
+              <option>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+          <div id="education_selection"></div>
+          <div class="select_div">
+            <label>What type of home are you looking for?</label>
+            <select class="form-control" id="home_selection">
+              <option>Single Family Household</option>
+              <option>Single Family Multi Unit</option>
+              <option>Multi-Family</option>
+              <option>Mobile Homes</option>
+            </select>
+          </div>
+          <div class="select_div">
+            <label>What's your budget?</label>
+            <select class="form-control" id="budget_selection">
+              <option>Below $150,000</option>
+              <option>$150,000 - $199,000</option>
+              <option>$200,000 - $299,000</option>
+              <option>$300,000 - $499K,000</option>
+              <option>$500,000 - $999,000</option>
+              <option>Greater than $1,000,000</option>
+            </select>
+          </div>
+        </form>
+        <button id="update_map" class="btn btn-default btn_center">Submit</button>
+      </div>
+      <div id="map_canvas" class="map_canvas container_margin"></div>
     </div>
   </div>
 
-  <div id="sidebar_wrapper">
-    <form id="my_form">
-      <div class="select_div">
-        <label>Any kids?</label>
-        <select class="form-control" id="dynam_selection">
-          <option>0</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-      </div>
-      <div id="education_selection"></div>
-      <div class="select_div">
-        <label>What type of home are you looking for?</label>
-        <select class="form-control" id="home_selection">
-          <option>Single Family Household</option>
-          <option>Single Family Multi Unit</option>
-          <option>Multi-Family</option>
-          <option>Mobile Homes</option>
-        </select>
-      </div>
-      <div class="select_div">
-        <label>What's your budget?</label>
-        <select class="form-control" id="budget_selection">
-          <option>Below $150,000</option>
-          <option>$150,000 - $199,000</option>
-          <option>$200,000 - $299,000</option>
-          <option>$300,000 - $499K,000</option>
-          <option>$500,000 - $999,000</option>
-          <option>Greater than $1,000,000</option>
-        </select>
-      </div>
-    </form>
-    <button id="update_map" class="btn btn-default btn_center">Submit</button>
-  </div>
-  <div id="map_canvas" class="container_margin"></div>
 
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
