@@ -563,7 +563,7 @@ function append_selection() {
 
 
 function get_form_values() {
-  // Creating JSON
+  // Create JSON
   var output = {};
 
   // Get value of number of children selection and put
