@@ -28,8 +28,13 @@ function initialize() {
           zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           center: new google.maps.LatLng(32.7157380, -117.1610840),
-          streetViewControl : false
-      });
+          streetViewControl : false,
+          styles: [{"featureType":"water","stylers":[{"visibility":"on"},{"color":"#b5cbe4"}]},{"featureType":"landscape","stylers":[{"color":"#efefef"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#83a5b0"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#bdcdd3"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#e3eed3"}]},{"featureType":"administrative","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"road"},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{},{"featureType":"road","stylers":[{"lightness":20}]}],
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT
+          },
+          panControl: false
+        });
 
   // listen to Leap Motion
   Leap.loop({enableGestures: true}, move);
@@ -345,7 +350,7 @@ function update_map() {
         // console.log("region id: " + data.features[j].properties.REGIONID);
 
         if (factors[i].Area == data.features[j].properties.NAME ||
-              factors[i].Area == data.features[j].properties.CITY) {
+              factors[i].Area == data.features[j].properties.DELPHIREGION) {
 
 
           rateById[data.features[j].properties.REGIONID] =+ factors[i].NoveFactor;
@@ -360,7 +365,10 @@ function update_map() {
         .attr("d", path).style("fill", function(d) {
           // console.log(d);
           // console.log(rateById[d.REGIONID]);
-          return color(rateById[d.properties.REGIONID]);
+          // if (!rateById[d.properties.REGIONID])
+          //   return "none";
+          // else
+            return color(rateById[d.properties.REGIONID]);
         }).on('mouseover', tipFactors.show).on('mouseout', tipFactors.hide);;
 
   });
