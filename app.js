@@ -32,6 +32,10 @@ app.use(session({ secret: 'keyboard cat',
                   resave: true}));
 
 app.get('/', function(req, res){
+  res.render('landing');
+});
+
+app.get('/index', function(req, res){
   res.render('index');
 });
 
