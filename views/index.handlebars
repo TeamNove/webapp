@@ -17,25 +17,10 @@
   <script type="text/javascript" src="javascripts/leap-map.js"></script>
   <script type="text/javascript" src="javascripts/jquery.smoothState.min.js"></script>
   <script type="text/javascript" src="javascripts/smoothState.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Lato|Roboto+Slab' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <div id="main" class="m-scene" style="height: 100%;">
-    <nav class="navbar navbar-default navbar-fixed-top scene_element scene_element--fadeinup">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Team Nove</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
 
     <div id="dim_map"></div>
       <div id="palm_menu">
@@ -48,7 +33,7 @@
       <div id="sidebar_wrapper">
         <form id="my_form">
           <div class="select_div">
-            <label>Any kids?</label>
+            <label class="font_lato">Any kids?</label>
             <select class="form-control" id="dynam_selection">
               <option>0</option>
               <option>1</option>
@@ -59,8 +44,8 @@
           </div>
           <div id="education_selection"></div>
           <div class="select_div">
-            <label>What type of home are you looking for?</label>
-            <select class="form-control" id="home_selection">
+            <label class="font_lato">What type of home are you looking for?</label>
+            <select class="form-control select-wrapper" id="home_selection">
               <option>Single Family Household</option>
               <option>Single Family Multi Unit</option>
               <option>Multi-Family</option>
@@ -68,7 +53,7 @@
             </select>
           </div>
           <div class="select_div">
-            <label>What's your budget?</label>
+            <label class="font_lato">What's your budget?</label>
             <select class="form-control" id="budget_selection">
               <option>Below $150,000</option>
               <option>$150,000 - $199,000</option>
@@ -81,7 +66,25 @@
         </form>
         <button id="update_map" class="btn btn-default btn_center">Submit</button>
       </div>
-      <div id="map_canvas" class="map_canvas container_margin"></div>
+      <div id="map_canvas" class="map_canvas"></div>
+      <div id="legend">
+        <p class="text-center">Nove Score</p>
+        <div class="row">
+          <div class="col-xs-6">10</div>
+          <div class="legend_color" id="color1"></div>
+        </div>
+        <div class="legend_color" id="color2"></div>
+        <div class="legend_color" id="color3"></div>
+        <div class="legend_color" id="color4"></div>
+        <div class="legend_color" id="color5"></div>
+        <div class="legend_color" id="color6"></div>
+        <div class="legend_color" id="color7"></div>
+        <div class="legend_color" id="color8"></div>
+        <div class="row">
+          <div class="col-xs-6">1</div>
+          <div class="legend_color" id="color9"></div>
+        </div>
+      </div>
     </div>
   </div>
 

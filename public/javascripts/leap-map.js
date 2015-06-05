@@ -13,6 +13,7 @@ $(document).ready(function() {
   initializePage();
   drawOverlay();
   DelphiDemo.init();
+
   google.maps.event.addDomListener(window, 'load', initialize);
 });
 
@@ -29,13 +30,15 @@ function initialize() {
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           center: new google.maps.LatLng(32.893046, -117.147236),
           streetViewControl : false,
-          styles: [{"featureType":"water","stylers":[{"visibility":"on"},{"color":"#b5cbe4"}]},{"featureType":"landscape","stylers":[{"color":"#efefef"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#83a5b0"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#bdcdd3"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#e3eed3"}]},{"featureType":"administrative","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"road"},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{},{"featureType":"road","stylers":[{"lightness":20}]}],
+          styles: [{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"water","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#C6E2FF"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#C5E3BF"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#D1D1B8"}]}],
           zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT
           },
           panControl: false
         });
 
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+        document.getElementById('legend'));
   // listen to Leap Motion
   Leap.loop({enableGestures: true}, move);
 }
@@ -326,8 +329,8 @@ function update_map() {
   console.log("recognized button click");
   var color = d3.scale.threshold()
     .domain([6.7, 6.8, 6.9, 7.0, 7.1, 7.2, 7.3, 7.4, 8])
-    .range(["#f7fcfd", "#e0ecf4", "#bfd3e6", "#9ebcda","#8c96c6", "#8c6bb1",
-              "#88419d", "#810f7c", "#4d004b"]);
+    .range(["#d73027", "#f46d43", "#fdae61", "#fee08b","#ffffbf", "#d9ef8b",
+              "#a6d96a", "#66bd63", "#1a9850"]);
   var rateById = {};
 
   var form_values = get_form_values();
@@ -545,7 +548,7 @@ function append_selection() {
 
   $(".education_selection").remove();
 
-  var start = '<div class="select_div education_selection"><label>Child';
+  var start = '<div class="select_div education_selection"><label class="font_lato">Child';
   var mid = 'grade level?</label><select class="form-control" id="child';
   var end = '"><option>Less than 9th grade</option><option>9th through 12th grade, no diploma</option><option>High school graduate (include equivalency)</option><option>Some college, no diploma</option><option>Associate\'s degree</option><option>Bachelor\'s degree</option><option>Master\'s degree</option></select></div>';
 
