@@ -94,7 +94,7 @@ select {
   stroke: black;
   stroke-width: 1px;
   fill: #adadad;
-  fill-opacity: .75;
+  fill-opacity: .55;
 }
 
 path:hover {
@@ -138,6 +138,7 @@ label {
   height: 20px;
   width: 20px;
   margin: 0 auto;
+  opacity: .55;
 }
 
 #color1 {
