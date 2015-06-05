@@ -127,11 +127,18 @@ label {
 
 .font_lato {
   font-family: 'Lato', sans-serif;
+  color: #ffffff;
 }
 
 #legend {
   background: white;
   padding: 10px;
+}
+
+#legend_help{
+  display: hidden;
+  background: white;
+  padding: 5px;
 }
 
 .legend_color {
@@ -175,4 +182,8 @@ label {
 
 #color9 {
   background-color: #d73027;
+}
+
+.modal-content {
+  padding: 15px;
 }
