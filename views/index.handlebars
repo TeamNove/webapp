@@ -29,11 +29,30 @@
       </div>
     </div>
 
+    <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <p>
+            The Nove Score matches regions of interest based off the information
+            you provided in the sidebar. Using the Nove Factor, we are able to
+            calculate and rank regions within San Diego County with the Nove Score,
+            where 10 is the best match and 1 is the worst match.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <div class="scene_element scene_element--fadeinup" style="height: 100%;">
       <div id="sidebar_wrapper">
+        <div>
+          <p class="font_lato">
+            Enter some information about the idea home you're looking for, and the
+            Nove Factor will tell you what regions are right for you!
+          </p>
+        </div>
         <form id="my_form">
           <div class="select_div">
-            <label class="font_lato">Any kids?</label>
+            <label class="font_lato">Number of children?</label>
             <select class="form-control" id="dynam_selection">
               <option>0</option>
               <option>1</option>
@@ -68,7 +87,10 @@
       </div>
       <div id="map_canvas" class="map_canvas"></div>
       <div id="legend">
-        <p class="text-center">Nove Score</p>
+        Nove Score
+        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-md">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        </button>
         <div class="row">
           <div class="col-xs-6">10</div>
           <div class="legend_color" id="color1"></div>
@@ -87,7 +109,6 @@
       </div>
     </div>
   </div>
-
 
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
