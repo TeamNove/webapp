@@ -307,21 +307,7 @@ function drawOverlay() {
 var tip = d3.tip()
   .attr('class', 'd3-tip')
   .html(function(d) {
-    // console.log(d.properties.NAME);
     return "<span>" + d.properties.NAME + "</span>";
-  });
-
-var tipFactors = d3.tip()
-  .attr('class', 'd3-tip')
-  .html(function(d) {
-    // console.log(d.properties.NAME);
-    // console.log(d);
-    // var factors = getFactors();
-    // console.log(factors);
-
-    return "<span>" +
-              d.properties.NAME +
-           "</span>";
   });
 
 
@@ -341,6 +327,23 @@ function update_map() {
 
     // console.log(data);
     // console.log(factors);
+
+    var tipFactors = d3.tip()
+    .attr('class', 'd3-tip')
+    .html(function(d) {
+      console.log(d);
+      for (var i = 0; i < factors.length; i++) {
+        if (factors[i].Area == d.properties.NAME ||
+              factors[i].Area == d.properties.DELPHIREGION)
+          return "<span>" +
+                    d.properties.NAME + "<br>" +
+                    "Nove Factor: " + factors[i].NoveFactor + "<br>" +
+                    "Education Factor: " + factors[i].educationFactor + "<br>" +
+                    "Housing Factor: " + factors[i].housingFactor + "<br>" +
+                 "</span>";
+      }
+
+    });
 
     svg.call(tipFactors);
 
@@ -367,7 +370,7 @@ function update_map() {
       }
     }
 
-    console.log(rateById);
+    // console.log(rateById);
 
     adminDivisions.selectAll("path")
         .data(data.features)
