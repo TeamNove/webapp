@@ -54,7 +54,7 @@ select {
   height: 100%;
   z-index: 1;
   opacity: 0.75;
-  visibility: hidden;
+  /*visibility: hidden;*/
   margin-left: 250px;
 }
 
@@ -66,14 +66,14 @@ select {
   left: 15%;
   margin: auto;
   margin-top: 12%;
-  width: 700px;
-  height: 400px;
+  width: 750px;
+  height: 500px;
   background-color: white;
   border-style: solid;
   border-color: white;
   border-width: 4px;
   z-index: 2;
-  visibility: hidden;
+  /*visibility: hidden;*/
 }
 
 .SvgOverlay {
@@ -123,6 +123,10 @@ path:hover {
 
 label {
   color: #ffffff;
+}
+
+.font_lato_only {
+  font-family: 'Lato', sans-serif;
 }
 
 .font_lato {
@@ -197,4 +201,46 @@ label {
 
 .modal-content {
   padding: 15px;
+}
+
+.about_btn {
+  margin-top: 26px;
+}
+
+.gesture_icon_size {
+  width: 160px;
+  height: auto;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.gesture_icon_size_height {
+  width: auto;
+  height: 100px;
+  margin-bottom: 30px;
+}
+
+#gesture_pan_img {
+  margin-left: 40px;
+}
+
+#gesture_zoomin {
+  margin-left: 40px;
+}
+
+#gesture_zoomout {
+  margin-left: 40px;
+}
+
+#guide_title {
+  margin-bottom: 40px;
+}
+
+.gesture_text_padding {
+  padding-top: 25px;
+}
+
+.close_menu {
+  margin-left: 200px;
+  margin-top: 70px;
 }

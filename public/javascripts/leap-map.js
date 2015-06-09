@@ -21,6 +21,8 @@ function initializePage(){
   $("#update_map").click(update_map);
 
   $("#dynam_selection").change(append_selection);
+
+  $(".close_menu").click(close_menu);
 }
 
 function initialize() {
@@ -97,8 +99,8 @@ function LeapExample(exampleID, initCallback, frameCallback) {
         if (!self.initialized) self.init();
         console.log("Device connected");
         self.leapConnected = true;
-                         document.getElementById("dim_map").style.visibility = 'visible';
-      document.getElementById("palm_menu").style.visibility = 'visible';
+        document.getElementById("dim_map").style.visibility = 'visible';
+        document.getElementById("palm_menu").style.visibility = 'visible';
     });
 
     this.controller.on('streamingStopped', function () {
@@ -231,6 +233,11 @@ function menuClose(frame) {
       opened = false;
     }
   }
+}
+
+function close_menu() {
+  document.getElementById("dim_map").style.visibility = 'hidden';
+  document.getElementById("palm_menu").style.visibility = 'hidden';
 }
 
 var handMarkers = [];
@@ -415,12 +422,12 @@ function update_map() {
       for (var i = 0; i < factors.length; i++) {
         if (factors[i].Area == d.properties.NAME ||
               factors[i].Area == d.properties.DELPHIREGION)
-          return "<span>" +
-                    d.properties.NAME + "<br>" +
-                    "Nove Factor: " + factors[i].NoveFactor.toFixed(2) + "<br>" +
-                    "Education Factor: " + factors[i].educationFactor.toFixed(2) + "<br>" +
-                    "Housing Factor: " + factors[i].housingFactor.toFixed(2) + "<br>" +
-                 "</span>";
+          return "<div>" +
+                    '<p class="text-center">' + d.properties.NAME + "</p>" + "<br>" +
+                    "<p>Nove Factor: " + factors[i].NoveFactor.toFixed(2) + "</p>" +
+                    "<p>Education Factor: " + factors[i].educationFactor.toFixed(2) + "</p>" +
+                    "<p>Housing Factor: " + factors[i].housingFactor.toFixed(2) + "</p>" +
+                 "</div>";
       }
 
     });
