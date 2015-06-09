@@ -21,7 +21,7 @@ select {
   background-image: url('../images/spritesheet-retina.png') !important;
   background-repeat: no-repeat;
   background-size: 10px auto;
-  background-position: 190px 10px;
+  background-position: 175px 10px;
   border: none !important;
   border-radius: 0 !important;
   box-sizing: border-box !important;
@@ -144,28 +144,34 @@ label {
 .legend_color {
   height: 20px;
   width: 20px;
-  margin: 0 auto;
+  margin-left: 65px;
   opacity: .55;
 }
 
+#first_color {
+  margin-top: 10px;
+}
+
 #color1 {
-  background-color: #1a9850;
+  background-color: #006837;
+  margin-left: 80px;
+  margin-top: 10px;
 }
 
 #color2 {
-  background-color: #66bd63;
+  background-color: #1a9850;
 }
 
 #color3 {
-  background-color: #a6d96a;
+  background-color: #66bd63;
 }
 
 #color4 {
-  background-color: #d9ef8b;
+  background-color: #a6d96a;
 }
 
 #color5 {
-  background-color: #ffffbf;
+  background-color: #d9ef8b;
 }
 
 #color6{
@@ -182,6 +188,11 @@ label {
 
 #color9 {
   background-color: #d73027;
+}
+
+#color10 {
+  background-color: #a50026;
+  margin-left: 80px;
 }
 
 .modal-content {
