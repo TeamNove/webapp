@@ -68,8 +68,6 @@ function LeapExample(exampleID, initCallback, frameCallback) {
            console.log("Device detected");
            self.leapConnected = true;
            window.clearTimeout(self.timeout);
-                 document.getElementById("dim_map").style.visibility = 'visible';
-      document.getElementById("palm_menu").style.visibility = 'visible';
            self.controller.removeListener("frame", self.frameDetectedCallback);
         }
     }
@@ -99,7 +97,8 @@ function LeapExample(exampleID, initCallback, frameCallback) {
         if (!self.initialized) self.init();
         console.log("Device connected");
         self.leapConnected = true;
-
+                         document.getElementById("dim_map").style.visibility = 'visible';
+      document.getElementById("palm_menu").style.visibility = 'visible';
     });
 
     this.controller.on('streamingStopped', function () {
