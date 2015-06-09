@@ -13,7 +13,7 @@ $(document).ready(function() {
   initializePage();
   drawOverlay();
   DelphiDemo.init();
-
+  var example = new LeapExample("thisLeapExample", exampleInit, exampleFrame);
   google.maps.event.addDomListener(window, 'load', initialize);
 });
 
@@ -21,6 +21,8 @@ function initializePage(){
   $("#update_map").click(update_map);
 
   $("#dynam_selection").change(append_selection);
+
+  $(".close_menu").click(close_menu);
 }
 
 function initialize() {
@@ -42,6 +44,86 @@ function initialize() {
   // listen to Leap Motion
   Leap.loop({enableGestures: true}, move);
 }
+
+function LeapExample(exampleID, initCallback, frameCallback) {
+    var self = this;
+    this.exampleID = exampleID;
+    this.initCallback = initCallback;
+    this.frameCallback = frameCallback;
+
+    this.serviceConnected = false;
+    this.leapConnected = false;
+    this.initialized = false;
+    this.controller = new Leap.Controller();
+
+    //Initialize example code and set onframe callback
+    this.init = function () {
+        self.exampleElement = document.getElementById(self.exampleID);
+        if (self.initCallback) self.initialized = self.initCallback();
+        self.controller.on("frame", self.forwardFrameCallback);
+    }
+
+    //Look for a valid frame to see if device is present
+    this.frameDetectedCallback = function() {
+        if(self.controller.frame(0).valid){
+           if (!self.initialized) self.init();
+           console.log("Device detected");
+           self.leapConnected = true;
+           window.clearTimeout(self.timeout);
+           self.controller.removeListener("frame", self.frameDetectedCallback);
+        }
+    }
+
+    //Forward frames to example code
+    this.forwardFrameCallback = function(){
+         if (self.frameCallback) self.frameCallback(self.controller.frame(0));
+    }
+
+    //On connection to service, set a timeout to warn if valid frames
+    //aren't detected in a reasonable amount of time
+    this.controller.on('connect', function () {
+        console.log("Service connected");
+        serviceConnected = true;
+        self.timeout = window.setTimeout(function(){
+            console.log("Couldn't detect device");
+        }, 500);
+        self.controller.on("frame", self.frameDetectedCallback);
+    });
+
+    this.controller.on('disconnect', function () {
+        console.log("Service disconnected");
+        serviceConnected = false;
+    });
+
+    this.controller.on('streamingStarted', function () {
+        if (!self.initialized) self.init();
+        console.log("Device connected");
+        self.leapConnected = true;
+        document.getElementById("dim_map").style.visibility = 'visible';
+        document.getElementById("palm_menu").style.visibility = 'visible';
+    });
+
+    this.controller.on('streamingStopped', function () {
+        console.log("Device disconnected");
+        self.leapConnected = false;
+
+    });
+
+    this.controller.connect();
+}
+
+//Example example that uses the LeapExample class:
+
+var exampleInit = function () {
+    console.log("Init called")
+    return true;
+}
+
+var exampleFrame = function (frame) {
+
+}
+
+
 
 function move(frame) {
   // Look for any circle gestures and process the zoom
@@ -151,6 +233,11 @@ function menuClose(frame) {
       opened = false;
     }
   }
+}
+
+function close_menu() {
+  document.getElementById("dim_map").style.visibility = 'hidden';
+  document.getElementById("palm_menu").style.visibility = 'hidden';
 }
 
 var handMarkers = [];
@@ -335,12 +422,12 @@ function update_map() {
       for (var i = 0; i < factors.length; i++) {
         if (factors[i].Area == d.properties.NAME ||
               factors[i].Area == d.properties.DELPHIREGION)
-          return "<span>" +
-                    d.properties.NAME + "<br>" +
-                    "Nove Factor: " + factors[i].NoveFactor + "<br>" +
-                    "Education Factor: " + factors[i].educationFactor + "<br>" +
-                    "Housing Factor: " + factors[i].housingFactor + "<br>" +
-                 "</span>";
+          return "<div>" +
+                    '<p class="text-center">' + d.properties.NAME + "</p>" + "<br>" +
+                    "<p>Nove Factor: " + factors[i].NoveFactor.toFixed(2) + "</p>" +
+                    "<p>Education Factor: " + factors[i].educationFactor.toFixed(2) + "</p>" +
+                    "<p>Housing Factor: " + factors[i].housingFactor.toFixed(2) + "</p>" +
+                 "</div>";
       }
 
     });

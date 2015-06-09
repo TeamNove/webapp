@@ -9,34 +9,139 @@
   <script src="//js.leapmotion.com/leap-plugins-0.1.10.min.js"></script>
   <script src="//js.leapmotion.com/leap.rigged-hand-0.1.7.min.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyGMI9Ay9WxySDP7LtSlprGnBYsA49an4"></script>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="http://d3js.org/queue.v1.min.js"></script>
-  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="javascripts/d3.v3.min.js"></script>
+  <script src="javascripts/queue.v1.min.js"></script>
+  <script src="javascripts/topojson.v1.min.js"></script>
   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="javascripts/index.js"></script>
   <script type="text/javascript" src="javascripts/leap-map.js"></script>
   <script type="text/javascript" src="javascripts/jquery.smoothState.min.js"></script>
   <script type="text/javascript" src="javascripts/smoothState.js"></script>
-  <link href='http://fonts.googleapis.com/css?family=Lato|Roboto+Slab' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <div id="main" class="m-scene" style="height: 100%;">
 
     <div id="dim_map"></div>
       <div id="palm_menu">
-        <div id="menu" class="text-center">
-          <h1>MENU</h1>
+        <div id="menu">
+          <h1 class="font_lato_only text-center" id="guide_title">Leap Motion Guide</h1>
+          <div class="row">
+            <div class="col-xs-6 left_col">
+              <div class="col-xs-6">
+                <img class="gesture_icon_size" src="images/gesture_open.png">
+              </div>
+              <div class="col-xs-6">
+                <p>
+                  Open up the Leap Motion Guide menu by facing both hands
+                  palm up over the device.
+                </p>
+              </div>
+            </div>
+            <div class="col-xs-6 right_col">
+              <div class="col-xs-6">
+                <img class="gesture_icon_size" src="images/gesture_close.png">
+              </div>
+              <div class="col-xs-6">
+                <p>
+                  Close the Leap Motion Guide menu by facing both hands palm down
+                  over the device.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 left_col">
+              <div class="col-xs-6">
+                <img class="gesture_icon_size_height" id="gesture_zoomin" src="images/gesture_zoomin.png">
+              </div>
+              <div class="col-xs-6 gesture_text_padding">
+                <p>
+                  Draw a clockwise circle with your finger to have the map zoom in.
+                </p>
+              </div>
+            </div>
+            <div class="col-xs-6 right_col">
+              <div class="col-xs-6">
+                <img class="gesture_icon_size_height" id="gesture_zoomout" src="images/gesture_zoomout.png">
+              </div>
+              <div class="col-xs-6 gesture_text_padding">
+                <p>
+                  Draw a counter-clockwise circle with your finger to have the map zoom out.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 left_col">
+              <div class="col-xs-6">
+                <img class="gesture_icon_size_height" id="gesture_pan_img" src="images/gesture_pan.png">
+              </div>
+              <div class="col-xs-6">
+                <p>
+                  Create a fist with either hand to grab onto the map. Move your fist around
+                  to pan around the map.
+                </p>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <button type="button" class="btn btn-default close_menu">
+                Close Menu
+              </button>
+            </div>
+          </div>
       </div>
     </div>
 
-    <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal fade modal_legend" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md">
         <div class="modal-content">
           <p>
-            The Nove Score matches regions of interest based off the information
-            you provided in the sidebar. Using the Nove Factor, we are able to
-            calculate and rank regions within San Diego County with the Nove Score,
-            where 10 is the best match and 1 is the worst match.
+            We score regions using the Nove Factor which consists of:
+          </p>
+          <p><strong>Education Factor</strong>:</p>
+          <p>
+            An educated area is a safe area.
+            And the overall quality of life also tends to be higher.
+            That is why our NoveFactor includes the Education Factor.
+            The Education Factor takes into account the education level of each person in a region
+            and rates the region accordingly from one to ten.
+            A region with an Education Factor of 8 or more means most of the population
+            has at least graduated from college with an bachelor's degree.
+            Such a region is very desirous.
+            On the other hand, a region with an Education Factor of below 4 means most of the people are
+            high school drop outs and such a region should be avoided.
+          </p>
+          <p><strong>Housing Factor</strong>:</p>
+          <p>
+            We help you pick an area Right For You.
+            Using the data you provide in the form we rate all the regions
+            from one to ten. We look at how many houses of the type requested are within
+            each region. We also look at how the price ranges in the region
+            and compare it to the budget provided.
+            Using all this data we give a score that tells you how likely it is
+            that you'll find the house for you within that region.
+          </p>
+          <p><strong>Social Factor</strong>:</p>
+          <p>
+            Kids need to be around other kids the same age.
+            And that is why our Social Factor looks at the age groups
+            of your children (if you have any) and rates the region
+            according to how many children of those age groups can be found.
+            Thanks to the Social Factor you can find the area where your kids
+            can socialize with equal peers and create better selves.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade modal_about" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <p>
+          Finding a place to live is hard. Instead of going through a bunch of
+          statistics and figures, let us do the work for you! Just tell us a bit
+          about yourself and what values matter most to you, and through the Nove
+          Factor, we'll show you where in San Diego is the right fit for you and your family.
           </p>
         </div>
       </div>
@@ -45,6 +150,17 @@
     <div class="scene_element scene_element--fadeinup" style="height: 100%;">
       <div id="sidebar_wrapper">
         <div>
+          <div class="row">
+            <div class="col-md-6">
+              <h1 class="font_lato">Nove</h1>
+            </div>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-default about_btn" data-toggle="modal" data-target=".modal_about">
+                About
+              </button>
+            </div>
+          </div>
+
           <p class="font_lato">
             Enter some information about the ideal home you're looking for, and the
             Nove Factor will tell you what regions are right for you!
@@ -88,7 +204,7 @@
       <div id="map_canvas" class="map_canvas"></div>
       <div id="legend">
         Nove Score
-        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-md">
+        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".modal_legend">
           <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
         </button>
         <div class="row">
