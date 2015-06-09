@@ -137,12 +137,9 @@ label {
 #legend {
   background: white;
   padding: 10px;
-}
-
-#legend_help{
-  display: hidden;
-  background: white;
-  padding: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000000;
 }
 
 .legend_color {
