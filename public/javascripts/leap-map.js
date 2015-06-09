@@ -307,7 +307,7 @@ function drawOverlay() {
 var tip = d3.tip()
   .attr('class', 'd3-tip')
   .html(function(d) {
-    console.log(d.properties.NAME);
+    // console.log(d.properties.NAME);
     return "<span>" + d.properties.NAME + "</span>";
   });
 
@@ -327,16 +327,15 @@ var tipFactors = d3.tip()
 
 function update_map() {
   console.log("recognized button click");
-  var color = d3.scale.threshold()
-    .domain([6.7, 6.8, 6.9, 7.0, 7.1, 7.2, 7.3, 7.4, 8])
-    .range(["#d73027", "#f46d43", "#fdae61", "#fee08b","#ffffbf", "#d9ef8b",
-              "#a6d96a", "#66bd63", "#1a9850"]);
+
   var rateById = {};
 
-  var form_values = get_form_values();
-  console.log(form_values);
-
   var factors = getFactors();
+
+  var domain_factors =[];
+  for (var i = 1; i <= 10; i++) {
+    domain_factors.push(factors.min + (factors.interval * i));
+  }
 
   d3.json("data/zillowneighborhoodsca.geojson", function(data) {
 
@@ -344,6 +343,13 @@ function update_map() {
     // console.log(factors);
 
     svg.call(tipFactors);
+
+    console.log("domain factors: " + domain_factors);
+
+    var color = d3.scale.threshold()
+    .domain(domain_factors)
+    .range(["#a50026", "#d73027", "#f46d43", "#fdae61","#fee08b", "#d9ef8b",
+              "#a6d96a", "#66bd63", "#1a9850", "#006837"]);
 
     for (var i = 0; i < factors.length; i++) {
       // console.log("CMON");
@@ -371,7 +377,8 @@ function update_map() {
           // if (!rateById[d.properties.REGIONID])
           //   return "none";
           // else
-            return color(rateById[d.properties.REGIONID]);
+          // console.log(color(rateById[d.properties.REGIONID]));
+          return color(rateById[d.properties.REGIONID]);
         }).on('mouseover', tipFactors.show).on('mouseout', tipFactors.hide);;
 
   });
@@ -413,14 +420,18 @@ var DelphiDemo = DelphiDemo || (function() {
         var region = {};
         if (edu == null)
         {
-          region.totalpop25 = null;
-          region.l9pop25 = null;
-          region.nineto12pop25 = null;
-          region.highgradpop25 = null;
-          region.nodippop25 = null;
-          region.assopop25 = null;
-          region.bachpop25 = null;
-          region.mastpop25 = null;
+          region.totalpop25 = -10000;
+          region.l9pop25 = -1;
+          region.nineto12pop25 = -1;
+          region.highgradpop25 = -1;
+          region.nodippop25 = -1;
+          region.assopop25 = -1;
+          region.bachpop25 = -1;
+          region.mastpop25 = -1;
+          region.nursery = -1;
+          region.kindergarden = -1;
+          region.G5 = -1;
+          region.G9 = -1;
         }
         else {
           region.Area = edu.Area;
@@ -432,19 +443,23 @@ var DelphiDemo = DelphiDemo || (function() {
           region.assopop25 = edu["Associate's degree (age>=25)"];
           region.bachpop25 = edu["Bachelor's degree (age>=25)"];
           region.mastpop25 = edu["Master's degree (age>=25)"];
+          region.nursery = edu['Nursery/preschool -total enrollment (age>=3)'];
+          region.kindergarden = edu['Kindergarten to grade 4 -total enrollment (age>=3)'];
+          region.G5 = edu['Grade 5 to grade 8 -total enrollment (age>=3)'];
+          region.G9 = edu['Grade 9 to grade 12 -total enrollment (age>=3)'];
         }
         if (hc == null)
         {
-          region.HU = null;
-          region.HUSF = null;
-          region.HUSFMU = null;
-          region.HUMU = null;
-          region.HUMH = null;
-          region.Occ = null;
-          region.OSF = null;
-          region.OSFMU = null;
-          region.OMU = null;
-          region.OMH = null;
+          region.HU = -1;
+          region.HUSF = -1;
+          region.HUSFMU = -1;
+          region.HUMU = -1;
+          region.HUMH = -1;
+          region.Occ = -1;
+          region.OSF = -1;
+          region.OSFMU = -1;
+          region.OMU = -1;
+          region.OMH = -1;
         }
         else {
           region.Area = hc.Area;
@@ -461,14 +476,14 @@ var DelphiDemo = DelphiDemo || (function() {
         }
         if (hv == null)
         {
-          region.tothouse = null;
-          region.HVl150 = null;
-          region.HV150 = null;
-          region.HV200 = null;
-          region.HV300 = null;
-          region.HV500 = null;
-          region.HV1000 = null;
-          region.medhouseval = null;
+          region.tothouse = -10000;
+          region.HVl150 = -1;
+          region.HV150 = -1;
+          region.HV200 = -1;
+          region.HV300 = -1;
+          region.HV500 = -1;
+          region.HV1000 = -1;
+          region.medhouseval = -1;
         }
         else {
           region.Area = hv.Area;
@@ -524,7 +539,14 @@ function getFactors()
 {
   var l = AllData.length,
       output = [],
-      region;
+      region,
+      selection = get_form_values(),
+      budgetval,
+      typeval,
+      socialtot,
+      j,
+      min = 11,
+      max = -1;
   for (var i = 0; i < l; i++)
   {
     var factors = {};
@@ -533,13 +555,63 @@ function getFactors()
     factors.educationFactor = (region.l9pop25 + (region.nineto12pop25 * 2)
       + (region.highgradpop25 * 4) + (region.nodippop25 * 6) + (region.assopop25 * 7)
       + (region.bachpop25 * 8) + (region.mastpop25 * 10)) / (region.totalpop25 * 1.0);
-    factors.housingFactor = 8;
-    factors.socialFactor = 7.5;
-    factors.NoveFactor = (factors.educationFactor + factors.housingFactor
-                        + factors.socialFactor) / 3.0;
+    switch (selection.budget)
+    {
+      case "Below $150,000": budgetval = Math.sqrt((region.HVl150 * 100.0) / region.tothouse); break;
+      case "$150,000 - $199,000": budgetval = Math.sqrt((region.HV150 * 100.0) / region.tothouse); break;
+      case "$200,000 - $299,000": budgetval = Math.sqrt((region.HV200 * 100.0) / region.tothouse); break;
+      case "$300,000 - $499K,000": budgetval = Math.sqrt((region.HV300 * 100.0) / region.tothouse); break;
+      case "$500,000 - $999,000": budgetval = Math.sqrt((region.HV500 * 100.0) / region.tothouse); break;
+      case "Greater than $1,000,000": budgetval = Math.sqrt((region.HV1000 * 100.0) / region.tothouse); break;
+    }
+    switch (selection.home_type)
+    {
+      case "Single Family Household": typeval = Math.sqrt((region.HUSF - region.OSF) * 100 /(totunocc = region.HU - region.OHU)); break;
+      case "Single Family Multi Unit": typeval = Math.sqrt((region.HUSFMU - region.OSFMU) * 100 /(totunocc = region.HU - region.OHU)); break;
+      case "Multi-Family": typeval = Math.sqrt((region.HUMF - region.OMF) * 100 /(totunocc = region.HU - region.OHU)); break;
+      case "Mobile Homes": typeval = Math.sqrt((region.HUMH - region.OMH) * 100 /(totunocc = region.HU - region.OHU)); break;
+    }
+    factors.housingFactor = (budgetval + typeval) / 2.0;
+    socialtot = 0;
+    for (j = 0; j < selection.num_of_children; j++)
+    {
+      switch (selection.education_levels[j])
+      {
+        case "Nursery/preschool": socialtot += ((region.nursery * 10) + (region.kindergarden * 8) + (region.G5 * 5) + (region.G9 * 2)) /
+            (region.nursery + region.kindergarden + region.G5 + region.G9); break;
+        case "Kindergarten to grade 4": socialtot += ((region.nursery * 8) + (region.kindergarden * 10) + (region.G5 * 8) + (region.G9 * 5)) /
+            (region.nursery + region.kindergarden + region.G5 + region.G9); break;
+        case "Grade 5 to grade 8": socialtot += ((region.nursery * 5) + (region.kindergarden * 8) + (region.G5 * 10) + (region.G9 * 8)) /
+            (region.nursery + region.kindergarden + region.G5 + region.G9); break;
+        case "Grade 9 to grade 12": socialtot += ((region.nursery * 2) + (region.kindergarden * 5) + (region.G5 * 8) + (region.G9 * 10)) /
+            (region.nursery + region.kindergarden + region.G5 + region.G9); break;
+      }
+    }
+    // factors.socialFactor = socialtot / selection.num_of_children;
+    // factors.NoveFactor = (factors.educationFactor + factors.housingFactor
+    //                     + factors.socialFactor) / 3.0;
+    if (selection.num_of_children != 0)
+    {
+      factors.socialFactor = socialtot / selection.num_of_children;
+      factors.NoveFactor = (factors.educationFactor + factors.housingFactor
+                          + factors.socialFactor) / 3.0;
+    }
+    else {
+      factors.NoveFactor = (factors.educationFactor + factors.housingFactor) / 2.0;
+    }
+    if (factors.NoveFactor > max)
+      max = factors.NoveFactor;
+
+    if (factors.NoveFactor < min)
+      min = factors.NoveFactor;
+
     output.push(factors);
   }
-  // console.log(output);
+  output.max = max;
+  output.min = min;
+  output.range = max - min;
+  output.interval = output.range / 10;
+  console.log(output);
   return output;
 }
 
@@ -550,7 +622,7 @@ function append_selection() {
 
   var start = '<div class="select_div education_selection"><label class="font_lato">Child';
   var mid = 'grade level?</label><select class="form-control" id="child';
-  var end = '"><option>Less than 9th grade</option><option>9th through 12th grade, no diploma</option><option>High school graduate (include equivalency)</option><option>Some college, no diploma</option><option>Associate\'s degree</option><option>Bachelor\'s degree</option><option>Master\'s degree</option></select></div>';
+  var end = '"><option>Nursery/preschool</option><option>Kindergarten to grade 4</option><option>Grade 5 to grade 8</option><option>Grade 9 to grade 12</option></select></div>';
 
   if ($('#dynam_selection').val() == 1) {
     $(start + " 1 " + mid + "1" + end).hide().appendTo("#education_selection").fadeIn(1000);
