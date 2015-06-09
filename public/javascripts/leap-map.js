@@ -420,14 +420,19 @@ function update_map() {
     .html(function(d) {
       console.log(d);
       for (var i = 0; i < factors.length; i++) {
-        if (factors[i].Area == d.properties.NAME ||
-              factors[i].Area == d.properties.DELPHIREGION)
+        if (factors[i].Area == d.properties.NAME || factors[i].Area == d.properties.DELPHIREGION)
           return "<div>" +
                     '<p class="text-center">' + d.properties.NAME + "</p>" + "<br>" +
                     "<p>Nove Factor: " + factors[i].NoveFactor.toFixed(2) + "</p>" +
                     "<p>Education Factor: " + factors[i].educationFactor.toFixed(2) + "</p>" +
                     "<p>Housing Factor: " + factors[i].housingFactor.toFixed(2) + "</p>" +
                  "</div>";
+
+        if (d.properties.DELPHIREGION == "unknown")
+          return "<div>" +
+                    '<p class="text-center">' + d.properties.NAME + "</p>" + "<br>" +
+                    "<p>No data for this region</p>" +
+                  "</div>";
       }
 
     });
