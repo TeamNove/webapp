@@ -33,6 +33,9 @@ function initialize() {
           center: new google.maps.LatLng(32.893046, -117.147236),
           streetViewControl : false,
           styles: [{"featureType":"road","elementType":"geometry","stylers":[{"lightness":100},{"visibility":"simplified"}]},{"featureType":"water","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#C6E2FF"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#C5E3BF"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#D1D1B8"}]}],
+          mapTypeControlOptions: {
+            position: google.maps.ControlPosition.TOP_RIGHT
+          },
           zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT
           },
